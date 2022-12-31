@@ -1,12 +1,10 @@
 module FalcoFood.Program
 
-open System.Xml
 open Falco
 open Falco.Routing
 open Falco.HostBuilder
 open Falco.Markup
 open Microsoft.AspNetCore.Builder
-open Microsoft.Extensions.Hosting.Internal
 
 // -------------------------------------
 // Types
@@ -19,14 +17,22 @@ type Recipe =
         Description : string
     }
 
+// Note this doesn't handle "not found" cases given it's just an
+// example app
+let selectRecipe (recipeId : int) (recipes : Recipe list) : Recipe =
+    let recipe = List.find (fun r -> r.Id = recipeId) recipes
+    recipe
+
+let recipeUri (recipe : Recipe) =
+    $"/recipes/{recipe.Id}"
 
 // ----------------------------------------------------------------
 // Extensions for using htmx.  Note there's
 // a Falco.Htmx package (https://github.com/dpraimeyuu/Falco.Htmx)
 // though it's currently experimental.  It's also not available
-// as a NuGet package, so installation is a bit more tricky.
+// via NuGet, so installation is a bit more tricky.
 // This app only uses a very small part of htmx, so it's
-// easier to build custom.
+// easier to just code it in-line here.
 // ----------------------------------------------------------------
 
 module Attr =
@@ -38,7 +44,7 @@ module Attr =
 // Views
 // -------------------------------------
 
-///Master page template: takes care of overall structure, styling, etc.
+//Master page template: takes care of overall structure, styling, etc.
 let template (title : string) (content : XmlNode list) =
     Elem.html [ Attr.lang "en"] [
         Elem.head [] [
@@ -103,9 +109,9 @@ let template (title : string) (content : XmlNode list) =
                                 Elem.div [ Attr.class' "card-header" ] [
                                     Elem.h3 [] [ Text.raw "Recipe Details" ]
                                 ]
+                                // Contents of this replaced with details when a recipe is selected
                                 Elem.div [ Attr.id "recipe-details"; Attr.class' "card-body" ] []
                             ]
-                            
                         ]
                     ]
                 ]
@@ -113,8 +119,7 @@ let template (title : string) (content : XmlNode list) =
         ]
     ]
 
-let recipeUri (recipe : Recipe) =
-    (sprintf "/recipes/%d" recipe.Id)
+// Render functions for recipe list & detail panels
 
 let recipeListItemView (recipe: Recipe) =
     let uri = recipeUri recipe
@@ -125,15 +130,10 @@ let recipeListItemView (recipe: Recipe) =
         ]
     ]
 
-let recipesListView (recipes : Recipe list) =
+let homePageView (recipes : Recipe list) =
     template "Recipe list" [
         Elem.ul [] (List.map recipeListItemView recipes)
     ]
-
-let selectRecipe (recipeId : int) (recipes : Recipe list) : Recipe =
-    // List.head(recipes)
-    let recipe = List.find (fun r -> r.Id = recipeId) recipes
-    recipe
 
 let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     let recipe = selectRecipe recipeId recipes
@@ -145,7 +145,7 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
 
 /// GET /recipes
 let listRecipes (recipes : Recipe list) : HttpHandler =
-    Response.ofHtml (recipesListView recipes)
+    Response.ofHtml (homePageView recipes)
     
 ///Get /recipes/id
 let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
@@ -187,7 +187,6 @@ let main args =
         endpoints [
             get "/" (Response.redirectTemporarily "/recipes")
             get "/recipes" (listRecipes recipes)
-            // get "/recipes/{id:int}" (showRecipe 1 recipes)
             get "/recipes/{id:int}" (fun ctx ->
                 let route = Request.getRoute ctx
                 let id = route.GetInt "id"
