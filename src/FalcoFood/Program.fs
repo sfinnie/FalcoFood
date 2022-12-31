@@ -40,9 +40,9 @@ let recipes : Recipe list =
 // ----------------------------------------------------------------
 
 module Attr =
-    let HxGet = Attr.create "hx-get"
-    let HxTarget = Attr.create "hx-target"
-    let HxSwap = Attr.create "hx-swap"
+    let hxGet = Attr.create "hx-get"
+    let hxTarget = Attr.create "hx-target"
+    let hxSwap = Attr.create "hx-swap"
 
 // -------------------------------------
 // Views
@@ -127,9 +127,10 @@ let recipeUri (recipe : Recipe) =
     (sprintf "/recipe/%d" recipe.Id)
 
 let recipeListItemView (recipe: Recipe) =
+    let uri = recipeUri recipe
     
     Elem.li [] [
-        Elem.a [ Attr.href (recipeUri recipe) ] [
+        Elem.a [ Attr.href ""; Attr.hxGet uri; Attr.hxTarget "#recipe-details"; Attr.hxSwap "innerHTML" ] [
             Text.raw recipe.Name
         ]
     ]
