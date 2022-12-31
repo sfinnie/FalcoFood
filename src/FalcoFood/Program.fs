@@ -149,7 +149,12 @@ let listRecipes (recipes : Recipe list) : HttpHandler =
     
 ///Get /recipes/id
 let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
-    Response.ofHtml (recipeDetailView 2 recipes)
+    Response.ofHtml (recipeDetailView recipeId recipes)
+
+let showRecipe2 : HttpHandler = fun ctx ->
+    let route = Request.getRoute ctx
+    let id = route.Get "id"
+    Response.ofHtml ( Text.raw id) ctx
 
 // -------------------------------------
 // Exception Handler
@@ -182,7 +187,11 @@ let main args =
         endpoints [
             get "/" (Response.redirectTemporarily "/recipes")
             get "/recipes" (listRecipes recipes)
-            get "/recipes/{id:int}" (showRecipe 1 recipes)
+            // get "/recipes/{id:int}" (showRecipe 1 recipes)
+            get "/recipes/{id:int}" (fun ctx ->
+                let route = Request.getRoute ctx
+                let id = route.GetInt "id"
+                (showRecipe id recipes) ctx)
         ]
     }
     0 //exit code
