@@ -10,11 +10,18 @@ open Microsoft.AspNetCore.Builder
 // Types
 // -------------------------------------
 
+type Ingredient = string
+type Step = string
+
+type Instructions =
+    | Inline of ingredients : Ingredient list * steps : Step list
+    | Link of string
 type Recipe =
     {
         Id : int
         Name : string
         Description : string
+        Instructions : Instructions
     }
 
 // Note this doesn't handle "not found" cases given it's just an
@@ -173,8 +180,30 @@ let main args =
 
     let recipes : Recipe list =
         [
-            { Id = 1; Name = "Beans on Toast"; Description = "old favourite" }
-            { Id = 2; Name = "Curry"; Description = "any sort will do" }
+            { Id = 1
+              Name = "Beans on Toast"
+              Description = "old favourite"
+              Instructions = Inline (
+                    ingredients = [
+                      "1 tin baked beans"
+                      "2 slides bread"
+                      "Butter"
+                    ],
+                    steps = [
+                      "Open the tin of beans"
+                      "Empty beans in saucepan"
+                      "Place saucepan on stove at medium heat"
+                      "Put bread in toaster & switch on"
+                      "Butter the toast when ready"
+                      "When the beans are heated through, pour over toast"
+                      "Eat"
+                    ])
+            }
+            { Id = 2
+              Name = "Curry"
+              Description = "warm, spicy, filling - with loads of varieties"
+              Instructions = Link "https://www.bbcgoodfood.com/recipes/collection/curry-recipes"
+            }
         ]
 
     webHost args {
