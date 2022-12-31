@@ -131,7 +131,9 @@ let recipesListView (recipes : Recipe list) =
     ]
 
 let selectRecipe (recipeId : int) (recipes : Recipe list) : Recipe =
-    List.head(recipes)
+    // List.head(recipes)
+    let recipe = List.find (fun r -> r.Id = recipeId) recipes
+    recipe
 
 let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     let recipe = selectRecipe recipeId recipes
@@ -147,7 +149,7 @@ let listRecipes (recipes : Recipe list) : HttpHandler =
     
 ///Get /recipes/id
 let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
-    Response.ofHtml (recipeDetailView 1 recipes)
+    Response.ofHtml (recipeDetailView 2 recipes)
 
 // -------------------------------------
 // Exception Handler
