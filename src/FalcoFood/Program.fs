@@ -61,9 +61,20 @@ let template (title : string) (content : XmlNode list) =
                 // Header panel
                 Elem.div [ Attr.class' "container p-3 bg-primary text-white text-center" ] [
                     Elem.h1 [] [Text.raw "Falco Food"]
-                    Elem.p [] [ Text.raw "A sample application using the " ]
-                    Elem.a [ Attr.href "https://www.falcoframework.com"; Attr.class' "text-white" ] [
-                        Text.raw "Falco web framework."
+                    Elem.p [] [
+                        Text.raw "A sample application using the "
+                        Elem.a [ Attr.href "https://www.falcoframework.com"; Attr.class' "text-white" ] [
+                            Text.raw "Falco web framework."
+                        ]
+                        Text.raw "  Also uses "
+                        Elem.a [ Attr.href "https://getbootstrap.com/"; Attr.class' "text-white" ] [
+                            Text.raw "Bootstrap"
+                        ]
+                        Text.raw " for styling, and "
+                        Elem.a [ Attr.href "https://htmx.org/"; Attr.class' "text-white" ] [
+                            Text.raw "htmx"
+                        ]
+                        Text.raw " for partial page updates."
                     ]
                 ]
                 
