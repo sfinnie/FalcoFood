@@ -136,11 +136,17 @@ let recipeListItemView (recipe: Recipe) =
     ]
 
 let recipesListView (recipes : Recipe list) =
- 
     template "Recipe list" [
         Elem.ul [] (List.map recipeListItemView recipes)
     ]
 
+let selectRecipe (recipeId : int) (recipes : Recipe list) : Recipe =
+    List.head(recipes)
+
+let recipeDetailView (recipeId : int) (recipes : Recipe list) =
+    let recipe = selectRecipe recipeId recipes
+    Text.raw recipe.Description
+    
 // -------------------------------------
 // View Handler Functions
 // -------------------------------------
@@ -148,6 +154,10 @@ let recipesListView (recipes : Recipe list) =
 /// GET /recipes
 let listRecipes : HttpHandler =
     Response.ofHtml (recipesListView recipes)
+    
+///Get /recipes/id
+let showRecipe : HttpHandler =
+    Response.ofHtml (recipeDetailView 1 recipes)
 
 // -------------------------------------
 // Exception Handler
@@ -169,7 +179,7 @@ let main args =
         endpoints [
             get "/" (Response.redirectTemporarily "/recipes")
             get "/recipes" listRecipes
-            get "/recipes/{id:int}" (Response.ofPlainText (sprintf "Hello from recipe #%d" 1))
+            get "/recipes/{id:int}" showRecipe
         ]
     }
     0 //exit code
