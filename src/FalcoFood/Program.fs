@@ -14,6 +14,7 @@ open Microsoft.Extensions.Hosting.Internal
 
 type Recipe =
     {
+        Id : int
         Name : string
         Description : string
     }
@@ -25,9 +26,23 @@ type Recipe =
 
 let recipes : Recipe list =
     [
-        { Name = "Beans on Toast"; Description = "old favourite" }
-        { Name = "Curry"; Description = "any sort will do" }
+        { Id = 1; Name = "Beans on Toast"; Description = "old favourite" }
+        { Id = 2; Name = "Curry"; Description = "any sort will do" }
     ]
+
+// ----------------------------------------------------------------
+// Extensions for using htmx.  Note there's
+// a Falco.Htmx package (https://github.com/dpraimeyuu/Falco.Htmx)
+// though it's currently experimental.  It's also not available
+// as a NuGet package, so installation is a bit more tricky.
+// This app only uses a very small part of htmx, so it's
+// easier to build custom.
+// ----------------------------------------------------------------
+
+module Attr =
+    let HxGet = Attr.create "hx-get"
+    let HxTarget = Attr.create "hx-target"
+    let HxSwap = Attr.create "hx-swap"
 
 // -------------------------------------
 // Views
@@ -88,7 +103,7 @@ let template (title : string) (content : XmlNode list) =
                                 Elem.div [ Attr.class' "card-header" ] [
                                     Elem.h3 [] [ Text.raw "Available Recipes" ]
                                 ]
-                                Elem.div [ Attr.id "recipes-list-card"; Attr.class' "card-body" ] content
+                                Elem.div [ Attr.id "recipe-list"; Attr.class' "card-body" ] content
                             ]
                         ]
                         
@@ -98,7 +113,7 @@ let template (title : string) (content : XmlNode list) =
                                 Elem.div [ Attr.class' "card-header" ] [
                                     Elem.h3 [] [ Text.raw "Recipe Details" ]
                                 ]
-                                Elem.div [ Attr.id "recipes-details-card"; Attr.class' "card-body" ] []
+                                Elem.div [ Attr.id "recipe-details"; Attr.class' "card-body" ] []
                             ]
                             
                         ]
@@ -108,10 +123,13 @@ let template (title : string) (content : XmlNode list) =
         ]
     ]
 
+let recipeUri (recipe : Recipe) =
+    (sprintf "/recipe/%d" recipe.Id)
 
 let recipeListItemView (recipe: Recipe) =
+    
     Elem.li [] [
-        Elem.a [ Attr.href "https://htmx.org/" ] [
+        Elem.a [ Attr.href (recipeUri recipe) ] [
             Text.raw recipe.Name
         ]
     ]
