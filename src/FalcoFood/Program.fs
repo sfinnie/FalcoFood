@@ -144,8 +144,17 @@ let homePageView (recipes : Recipe list) =
 
 let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     let recipe = selectRecipe recipeId recipes
-    Text.raw recipe.Description
     
+    match recipe.Instructions with
+    | Link uri -> Elem.p [] [
+            Text.raw $"{recipe.Description}.  Some good suggestions here: "
+            Elem.a [ Attr.href uri ] [
+                Text.raw uri
+            ]
+        ]
+    
+    | Inline(ingredients, steps) -> Text.raw (List.head steps)
+      
 // -------------------------------------
 // View Handler Functions
 // -------------------------------------
@@ -158,10 +167,6 @@ let listRecipes (recipes : Recipe list) : HttpHandler =
 let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
     Response.ofHtml (recipeDetailView recipeId recipes)
 
-let showRecipe2 : HttpHandler = fun ctx ->
-    let route = Request.getRoute ctx
-    let id = route.Get "id"
-    Response.ofHtml ( Text.raw id) ctx
 
 // -------------------------------------
 // Exception Handler
@@ -182,7 +187,7 @@ let main args =
         [
             { Id = 1
               Name = "Beans on Toast"
-              Description = "old favourite"
+              Description = "Perennial favourite.  Simple and foolproof."
               Instructions = Inline (
                     ingredients = [
                       "1 tin baked beans"
@@ -201,7 +206,7 @@ let main args =
             }
             { Id = 2
               Name = "Curry"
-              Description = "warm, spicy, filling - with loads of varieties"
+              Description = "warm, spicy, filling - with loads of varieties and recipes"
               Instructions = Link "https://www.bbcgoodfood.com/recipes/collection/curry-recipes"
             }
         ]
