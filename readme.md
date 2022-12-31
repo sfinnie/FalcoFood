@@ -4,7 +4,7 @@ This is an in-progress, sample application built with the [Falco](https://www.fa
 
 ## Setup
 
-1. Download & install [dotnet](https://dotnet.microsoft.com/en-us/download).  The project was built and tested with v7 though should work with v6.0
+1. Download & install [dotnet](https://dotnet.microsoft.com/en-us/download).  The project was built and tested with v7 though should work with v6.
 2. Clone this repo:
 
           $ cd /my/projects/dir
