@@ -34,7 +34,7 @@ let recipes : Recipe list =
 // -------------------------------------
 
 ///Master page template: takes care of overall structure, styling, etc.
-let template (title : string) (body : XmlNode list) =
+let template (title : string) (content : XmlNode list) =
     Elem.html [ Attr.lang "en"] [
         Elem.head [] [
             Elem.title [] [ Text.raw title ]
@@ -55,8 +55,10 @@ let template (title : string) (body : XmlNode list) =
             ] []
         ]
         Elem.body [] [
+            // Encompassing page
             Elem.div [ Attr.class' "vh-100" ] [
-                // Header
+                
+                // Header panel
                 Elem.div [ Attr.class' "container p-3 bg-primary text-white text-center" ] [
                     Elem.h1 [] [Text.raw "Falco Food"]
                     Elem.p [] [ Text.raw "A sample application using the " ]
@@ -64,6 +66,9 @@ let template (title : string) (body : XmlNode list) =
                         Text.raw "Falco web framework."
                     ]
                 ]
+                
+                // Main content panel
+                Elem.div [] content
             ]
         ]
     ]
@@ -73,8 +78,6 @@ let recipeListItemView (recipe: Recipe) =
     Elem.li [] [ Text.raw recipe.Name ]
 
 let recipesListView (recipes : Recipe list) =
-    let listItems = List.map recipeListItemView recipes
-    let firstRecipe = List.head recipes
  
     template "Recipe list" [
         Elem.h1 [] [Text.raw "Available recipes"]
