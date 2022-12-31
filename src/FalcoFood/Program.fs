@@ -19,16 +19,6 @@ type Recipe =
         Description : string
     }
 
-// -------------------------------------
-// "Database" - a simple, static list of 
-// recipes will suffice for now.
-// -------------------------------------
-
-let recipes : Recipe list =
-    [
-        { Id = 1; Name = "Beans on Toast"; Description = "old favourite" }
-        { Id = 2; Name = "Curry"; Description = "any sort will do" }
-    ]
 
 // ----------------------------------------------------------------
 // Extensions for using htmx.  Note there's
@@ -152,11 +142,11 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
 // -------------------------------------
 
 /// GET /recipes
-let listRecipes : HttpHandler =
+let listRecipes (recipes : Recipe list) : HttpHandler =
     Response.ofHtml (recipesListView recipes)
     
 ///Get /recipes/id
-let showRecipe : HttpHandler =
+let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
     Response.ofHtml (recipeDetailView 1 recipes)
 
 // -------------------------------------
@@ -168,7 +158,18 @@ let exceptionHandler : HttpHandler =
     >> Response.ofPlainText "Server error"
 
 [<EntryPoint>]
-let main args =   
+let main args =
+    // -------------------------------------
+    // "Database" - a simple, static list of 
+    // recipes will suffice for now.
+    // -------------------------------------
+
+    let recipes : Recipe list =
+        [
+            { Id = 1; Name = "Beans on Toast"; Description = "old favourite" }
+            { Id = 2; Name = "Curry"; Description = "any sort will do" }
+        ]
+
     webHost args {
         
         use_static_files
@@ -178,8 +179,8 @@ let main args =
         
         endpoints [
             get "/" (Response.redirectTemporarily "/recipes")
-            get "/recipes" listRecipes
-            get "/recipes/{id:int}" showRecipe
+            get "/recipes" (listRecipes recipes)
+            get "/recipes/{id:int}" (showRecipe 1 recipes)
         ]
     }
     0 //exit code
