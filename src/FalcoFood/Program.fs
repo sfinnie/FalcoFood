@@ -80,7 +80,9 @@ let template (title : string) (content : XmlNode list) =
                 
                 // Main content panel
                 Elem.div [ Attr.class' "container mt-5" ] [
-                    Elem.div [ Attr.class' "col"; Attr.id "content-col" ] [
+                    Elem.div [ Attr.class' "row"; Attr.id "content-col" ] [
+                        
+                        //Recipe list panel
                         Elem.div [ Attr.class' "col-lg-5" ] [
                             Elem.div [ Attr.class' "card h-100" ] [
                                 Elem.div [ Attr.class' "card-header" ] [
@@ -88,6 +90,17 @@ let template (title : string) (content : XmlNode list) =
                                 ]
                                 Elem.div [ Attr.id "recipes-list-card"; Attr.class' "card-body" ] content
                             ]
+                        ]
+                        
+                        //Recipe details panel
+                        Elem.div [ Attr.class' "col-lg-7" ] [
+                            Elem.div [ Attr.class' "card h-100" ] [
+                                Elem.div [ Attr.class' "card-header" ] [
+                                    Elem.h3 [] [ Text.raw "Recipe Details" ]
+                                ]
+                                Elem.div [ Attr.id "recipes-details-card"; Attr.class' "card-body" ] []
+                            ]
+                            
                         ]
                     ]
                 ]
@@ -97,7 +110,11 @@ let template (title : string) (content : XmlNode list) =
 
 
 let recipeListItemView (recipe: Recipe) =
-    Elem.li [] [ Text.raw recipe.Name ]
+    Elem.li [] [
+        Elem.a [ Attr.href "https://htmx.org/" ] [
+            Text.raw recipe.Name
+        ]
+    ]
 
 let recipesListView (recipes : Recipe list) =
  
