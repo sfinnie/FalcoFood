@@ -153,7 +153,12 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
             ]
         ]
     
-    | Inline(ingredients, steps) -> Text.raw (List.head steps)
+    | Inline(ingredients, steps) ->
+        Elem.div [] [
+            Elem.h4 [] [ Text.raw "Ingredients" ]
+            Elem.h4 [] [ Text.raw "Instructions" ]
+            Text.raw (List.head steps)
+        ]
       
 // -------------------------------------
 // View Handler Functions
