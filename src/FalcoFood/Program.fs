@@ -38,10 +38,21 @@ let template (title : string) (content : XmlNode list) =
     Elem.html [ Attr.lang "en"] [
         Elem.head [] [
             Elem.title [] [ Text.raw title ]
+            Elem.meta [ Attr.charset "utf-8" ]
+            Elem.meta [
+                Attr.name "viewport"
+                Attr.content "width=device-width, initial-scale=1.0"
+            ]
             Elem.link [
-                Attr.href "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+                Attr.href "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
                 Attr.rel "stylesheet"
             ]
+            Elem.script [
+                Attr.src "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            ] []
+            Elem.script [
+                Attr.src "https://unpkg.com/htmx.org@1.6.1"
+            ] []
         ]
         Elem.body [] content
     ]
