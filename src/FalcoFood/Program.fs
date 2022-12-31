@@ -124,7 +124,7 @@ let template (title : string) (content : XmlNode list) =
     ]
 
 let recipeUri (recipe : Recipe) =
-    (sprintf "/recipe/%d" recipe.Id)
+    (sprintf "/recipes/%d" recipe.Id)
 
 let recipeListItemView (recipe: Recipe) =
     let uri = recipeUri recipe
@@ -169,6 +169,7 @@ let main args =
         endpoints [
             get "/" (Response.redirectTemporarily "/recipes")
             get "/recipes" listRecipes
+            get "/recipes/{id:int}" (Response.ofPlainText (sprintf "Hello from recipe #%d" 1))
         ]
     }
     0 //exit code
