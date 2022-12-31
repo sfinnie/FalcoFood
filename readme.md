@@ -1,29 +1,27 @@
-# Hello World with Falco
+# FalcoFood - an exploratory example
 
-Hello world using the [Falco](https://www.falcoframework.com) F# framework.  Broadly comparable to [Saturn](https://saturnframework.org/) though newer and looks like a one-person effort.
+This is an in-progress, sample application built with the [Falco](https://www.falcoframework.com) F# web framework.  I'm building it to explore Falco, and web apps in F# more generally.  The intention is to use  [Bootstrap 5](https://getbootstrap.com/) for styling and [htmx](https://htmx.org/) for in-page updates.
 
 ## Setup
 
-Was simple and error-free using the [Getting Started](https://www.falcoframework.com/docs/get-started.html) instructions.  Basic "Hello World" up and running after 4 commands.
+1. Download & install [dotnet](https://dotnet.microsoft.com/en-us/download).  The project was built and tested with v7 though should work with v6.0
+2. Clone this repo:
 
-# Generating Alternative response formats
+          $ cd /my/projects/dir
+          $ git clone https://github.com/sfinnie/FalcoFood
+ 
+3. Build the solution (this wil automatically download required packages):
 
-The docs have [an entire section](https://www.falcoframework.com/docs/response.html) on writing various response formats.  
+          $ cd FalcoFood
+          $ dotnet build
 
 ## Running
 
 * Run server in hot reload mode:
 
-        $ dotnet watch
+        $ dotnet watch --project src/FalcoFood
 
   * Run server in "prod" mode:
 
-        $ dotnet run 
-  
-## Notes on docs
-
-1. Would be good if docs mentioned using `dotnet watch` in dev mode.
-2. Response examples don't show how to add routing entries.  This is minor, and could be argued against since the routing section is listed before responses.
-2. Possible error in redirect docs.  Submitted [issue #98](https://github.com/pimbrouwers/Falco/issues/98)
-
+        $ dotnet run  --project src/FalcoFood
 
