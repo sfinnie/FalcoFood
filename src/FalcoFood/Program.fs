@@ -34,7 +34,7 @@ let recipes : Recipe list =
 // -------------------------------------
 
 ///Master page template: takes care of overall structure, styling, etc.
-let template (title : string) (content : XmlNode list) =
+let template (title : string) (body : XmlNode list) =
     Elem.html [ Attr.lang "en"] [
         Elem.head [] [
             Elem.title [] [ Text.raw title ]
@@ -54,7 +54,18 @@ let template (title : string) (content : XmlNode list) =
                 Attr.src "https://unpkg.com/htmx.org@1.6.1"
             ] []
         ]
-        Elem.body [] content
+        Elem.body [] [
+            Elem.div [ Attr.class' "vh-100" ] [
+                // Header
+                Elem.div [ Attr.class' "container p-3 bg-primary text-white text-center" ] [
+                    Elem.h1 [] [Text.raw "Falco Food"]
+                    Elem.p [] [ Text.raw "A sample application using the " ]
+                    Elem.a [ Attr.href "https://www.falcoframework.com"; Attr.class' "text-white" ] [
+                        Text.raw "Falco web framework."
+                    ]
+                ]
+            ]
+        ]
     ]
 
 
