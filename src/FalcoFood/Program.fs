@@ -153,6 +153,9 @@ let homePageView (recipes : Recipe list) =
         Elem.ul [] (List.map recipeListItemView recipes)
     ]
 
+let ingredientsListView (ingredients : Ingredient list) =
+    Elem.ul [] (List.map ( fun i -> Elem.li [] [ Text.raw i ]) ingredients)
+
 let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     let recipe = selectRecipe recipeId recipes
     
@@ -167,6 +170,7 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     | Inline(ingredients, steps) ->
         Elem.div [] [
             Elem.h4 [] [ Text.raw "Ingredients" ]
+            ingredientsListView ingredients
             Elem.h4 [] [ Text.raw "Instructions" ]
             Text.raw (List.head steps)
         ]
