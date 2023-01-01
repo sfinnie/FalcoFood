@@ -163,8 +163,11 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
     let recipe = selectRecipe recipeId recipes
     
     match recipe.Instructions with
-    | Link uri -> Elem.p [] [
-            Text.raw $"{recipe.Description}.  Some good suggestions here: "
+    | Link uri ->
+        Elem.div [] [
+            Elem.p [ Attr.class' "mb-4" ] [
+                Text.raw $"{recipe.Description}  See, for example:"
+            ]
             Elem.a [ Attr.href uri ] [
                 Text.raw uri
             ]
@@ -230,8 +233,13 @@ let main args =
             }
             { Id = 2
               Name = "Curry"
-              Description = "warm, spicy, filling - with loads of varieties and recipes"
+              Description = "Warm, spicy, filling - with loads of varieties and recipes."
               Instructions = Link "https://www.bbcgoodfood.com/recipes/collection/curry-recipes"
+            }
+            { Id = 3
+              Name = "Cullen Skink"
+              Description = "Classic Scottish smoked fish soup."
+              Instructions = Link "https://www.bbc.co.uk/food/recipes/cullenskink_92467"
             }
         ]
 
