@@ -26,6 +26,7 @@ type Step = string
 type Instructions =
     | Inline of ingredients : Ingredient list * steps : Step list
     | Link of string
+
 type Recipe =
     {
         Id : int
