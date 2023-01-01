@@ -1,6 +1,6 @@
 /// ----------------------------------------------------------------------
 /// FalcoFood - an exploratory example using the Falco Framework.
-/// Simple enough to fit in a single module, bit enough to explore
+/// Simple enough to fit in a single module, big enough to explore
 /// a meaningful domain and view.
 ///
 /// The app shows a list of recipes; on selecting a specific recipe, the
@@ -62,8 +62,8 @@ module Attr =
 // Views
 // ----------------------------------------------------------------------
 
-//Master page template: takes care of overall structure, styling, etc.
-let template (title : string) (content : XmlNode list) =
+///Master page template: takes care of overall structure, styling, etc.
+let template (title : string) (listPanelContent : XmlNode list) =
     Elem.html [ Attr.lang "en"] [
         Elem.head [] [
             Elem.title [] [ Text.raw title ]
@@ -109,7 +109,7 @@ let template (title : string) (content : XmlNode list) =
                 
                 // Main content panel
                 Elem.div [ Attr.class' "container mt-5" ] [
-                    Elem.div [ Attr.class' "row"; Attr.id "content-col" ] [
+                    Elem.div [ Attr.class' "row" ] [
                         
                         //Recipe list panel
                         Elem.div [ Attr.class' "col-lg-5" ] [
@@ -117,7 +117,7 @@ let template (title : string) (content : XmlNode list) =
                                 Elem.div [ Attr.class' "card-header" ] [
                                     Elem.h3 [] [ Text.raw "Available Recipes" ]
                                 ]
-                                Elem.div [ Attr.id "recipe-list"; Attr.class' "card-body" ] content
+                                Elem.div [ Attr.id "recipe-list"; Attr.class' "card-body" ] listPanelContent
                             ]
                         ]
                         
