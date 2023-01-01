@@ -1,3 +1,12 @@
+/// ----------------------------------------------------------------------
+/// FalcoFood - an exploratory example using the Falco Framework.
+/// Simple enough to fit in a single module, bit enough to explore
+/// a meaningful domain and view.
+///
+/// The app shows a list of recipes; on selecting a specific recipe, the
+/// instructions are shown.  Instructions can either be provided inline, or
+/// as a link to a recipe on another website.
+/// ----------------------------------------------------------------------
 module FalcoFood.Program
 
 open Falco
@@ -6,9 +15,10 @@ open Falco.HostBuilder
 open Falco.Markup
 open Microsoft.AspNetCore.Builder
 
-// -------------------------------------
+
+// ----------------------------------------------------------------------
 // Types
-// -------------------------------------
+// ----------------------------------------------------------------------
 
 type Ingredient = string
 type Step = string
@@ -33,23 +43,24 @@ let selectRecipe (recipeId : int) (recipes : Recipe list) : Recipe =
 let recipeUri (recipe : Recipe) =
     $"/recipes/{recipe.Id}"
 
-// ----------------------------------------------------------------
+// ----------------------------------------------------------------------
 // Extensions for using htmx.  Note there's
 // a Falco.Htmx package (https://github.com/dpraimeyuu/Falco.Htmx)
 // though it's currently experimental.  It's also not available
 // via NuGet, so installation is a bit more tricky.
 // This app only uses a very small part of htmx, so it's
 // easier to just code it in-line here.
-// ----------------------------------------------------------------
+// ----------------------------------------------------------------------
 
 module Attr =
     let hxGet = Attr.create "hx-get"
     let hxTarget = Attr.create "hx-target"
     let hxSwap = Attr.create "hx-swap"
 
-// -------------------------------------
+
+// ----------------------------------------------------------------------
 // Views
-// -------------------------------------
+// ----------------------------------------------------------------------
 
 //Master page template: takes care of overall structure, styling, etc.
 let template (title : string) (content : XmlNode list) =
@@ -160,9 +171,9 @@ let recipeDetailView (recipeId : int) (recipes : Recipe list) =
             Text.raw (List.head steps)
         ]
       
-// -------------------------------------
+// ----------------------------------------------------------------------
 // View Handler Functions
-// -------------------------------------
+// ----------------------------------------------------------------------
 
 /// GET /recipes
 let listRecipes (recipes : Recipe list) : HttpHandler =
@@ -173,9 +184,9 @@ let showRecipe (recipeId : int) (recipes : Recipe list) : HttpHandler =
     Response.ofHtml (recipeDetailView recipeId recipes)
 
 
-// -------------------------------------
+// ----------------------------------------------------------------------
 // Exception Handler
-// -------------------------------------
+// ----------------------------------------------------------------------
 
 let exceptionHandler : HttpHandler =
     Response.withStatusCode 500 
@@ -196,7 +207,7 @@ let main args =
               Instructions = Inline (
                     ingredients = [
                       "1 tin baked beans"
-                      "2 slides bread"
+                      "2 slices bread"
                       "Butter"
                     ],
                     steps = [
